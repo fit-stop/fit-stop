@@ -246,6 +246,7 @@ class App extends React.Component {
     } else {
       var interval = setInterval(this.timer.bind(this), 1000);
       this.setState({interval: interval});
+      this.setState({paused: false});
     }
   }
 
