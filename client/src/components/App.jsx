@@ -238,6 +238,10 @@ class App extends React.Component {
     this.setState({interval: interval});
   }
 
+  pauseTimer() {
+    clearInterval(this.state.interval);
+  }
+
   timer() {
     var current = this.state.time;
     current--;
@@ -281,7 +285,7 @@ class App extends React.Component {
           return (<Countdown countdown={this.state.countdown} />);
       }
       if (this.state.currentState === 'Workout') {
-        return (<Workout exercise={this.state.currentWorkout[this.state.currentExercise]} timer={this.formatTime(this.state.time)} countdown={this.state.countdown} goToSummary={this.goToSummary} goToDashboard={this.goToDashboard} ref="workoutPage" />);
+        return (<Workout exercise={this.state.currentWorkout[this.state.currentExercise]} timer={this.formatTime(this.state.time)} countdown={this.state.countdown} goToSummary={this.goToSummary} goToDashboard={this.goToDashboard} pauseWorkout={this.pauseTimer.bind(this)} ref="workoutPage" />);
       }
       if (this.state.currentState === 'Summary') {
         return (<Summary goToDashboard={this.goToDashboard} currentWorkout={this.state.currentWorkout} workoutDate={this.state.workoutDate} workoutLengthInMins={this.state.workoutLengthInMins} loggedIn={this.state.loggedIn} />);
