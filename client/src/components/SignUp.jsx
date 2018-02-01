@@ -8,7 +8,9 @@ var SignUp = (props) => (
       <input id="password" type="password" name="password"/>
       <input type="submit" value="Sign Up"/>
     </form>
-    <h2>or</h2>
+    <br />
+    <h1>or</h1>
+    <button className="loginBtn loginBtn--facebook"><a href="/login/facebook">Sign up with Facebook</a></button>
   </div>
 );
 

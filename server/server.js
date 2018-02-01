@@ -29,8 +29,32 @@ passport.use(new Strategy({
   callbackURL: 'http://localhost:3000/login/facebook/return'
 },
 (accessToken, refreshToken, profile, cb) => {
-  console.log(accessToken, refreshToken, profile, cb);
-  return cb(null, profile);
+  process.nextTick(() => {
+    User.find({username: profile.displayName}, (err, user) => {
+      if (err) {
+        console.log("Database access error" + err);
+      } else {
+        if (!user[0]) {
+          var newUser = new User({
+            _id: new ObjectID(),
+            username: profile.displayName,
+            preferences: {}
+          });
+          newUser.save((err) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log('User created');
+              return cb(null, profile);
+            }
+          });
+        } else {
+          console.log('User exists');
+          return cb(null, profile);
+        }
+      }
+    });
+  });
 }));
 
 passport.serializeUser((user, cb) => {
@@ -44,6 +68,11 @@ passport.deserializeUser((obj, cb) => {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * *
   Express App Setup
 * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+app.all('/*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
 
 app.use('/public', express.static('client/public'));
 app.use('/react', express.static('node_modules/react/dist'));
@@ -80,12 +109,23 @@ app.get('/login/facebook/return',
   });
 
 app.post('/addWorkout', addWorkout);
-app.post('/login', checkLogin);
+app.post('/login', isLoggedIn, checkLogin);
 app.post('/signup', addSignup);
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * *
   Request Handlers
 * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+function isLoggedIn(req, res, next) {
+
+  // if user is authenticated in the session, carry on
+  if (req.isAuthenticated()) {
+    return next();
+  }
+
+  // if they aren't redirect them to the home page
+  res.redirect('/');
+}
 
 function getHistory(req, res) {
   var name = req.query.username;
@@ -186,7 +226,6 @@ function checkLogin(req, res) {
     }
   });
 }
-
 
 function addSignup(req, res) {
   var name = req.body.username;
