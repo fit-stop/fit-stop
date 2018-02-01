@@ -12,7 +12,8 @@ class App extends React.Component {
       countdown: 3,
       time: null,
       showButtons: true,
-      workoutLengthInMins: 15
+      workoutLengthInMins: 15,
+      paused: false
     };
 
     this.goToWorkout = this.goToWorkout.bind(this);
@@ -239,7 +240,13 @@ class App extends React.Component {
   }
 
   pauseTimer() {
-    clearInterval(this.state.interval);
+    if (this.state.paused === false) {
+      clearInterval(this.state.interval);
+      this.setState({paused: true});
+    } else {
+      var interval = setInterval(this.timer.bind(this), 1000);
+      this.setState({interval: interval});
+    }
   }
 
   timer() {
