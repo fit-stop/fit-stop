@@ -44,7 +44,7 @@ class Workout extends React.Component {
         <Exercise exercise={this.props.exercise} />
         <button onClick={this.props.goToDashboard} className="blackButton">Quit & Back To Dashboard</button>
         <button onClick={this.props.goToSummary} className="blackButton">Summary</button>
-        <button onClick={this.props.pauseWorkout} className="blackButton">Pause</button>
+        <button onClick={this.props.pauseWorkout} className="pauseButton">Pause</button>
       </div>
     );
   }

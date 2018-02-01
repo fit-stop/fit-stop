@@ -112,6 +112,26 @@ body {
   float: right;
 }
 
+.pauseButton {
+  background-color: #990202;
+  -webkit-border-radius: 8;
+  -moz-border-radius: 8;
+  border-radius: 8px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 14px;
+  padding: 10px 20px;
+  text-decoration: none;
+  float: right;
+  margin-top: 12px;
+}
+
+.pauseButtons:hover {
+  background-color: #5c0202;
+  text-decoration: none;
+  float: right;
+}
+
 .dateAndTime {
     font-weight: bold;
     color: #386994;

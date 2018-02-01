@@ -37,6 +37,10 @@
       ipcRenderer.on('workout:start', () => {
         document.querySelector('.startButton img').click();
       });
+
+      ipcRenderer.on('workout:pause', () => {
+        document.querySelector('.pauseButton').click();
+      });
       
       ipcRenderer.on('workout:end', () => {
         // TODO: This isn't a very safe way to execute the "End" function. Need to be more specific
